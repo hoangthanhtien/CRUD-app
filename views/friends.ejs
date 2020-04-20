@@ -3,3 +3,11 @@
 <% friends.forEach((friend)=>{ %>
     <li><%= friend.name %> - <%= friend.age %></li>
 <% }) %>
+
+<form action="/addfriend" method="POST">
+    <label for="name">User name: </label>
+    <input type="text" name="name" id="name">
+    <label for="age">User age: </label>
+    <input type="text" name="age" id="age">
+    <button type="submit">Submit</button>
+</form>

@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
-const Friend = require('./models/friends.model');
+const Friend = require("./models/friends.model");
 mongoose.connect("mongodb://localhost/friends", {
   useUnifiedTopology: true,
   useNewUrlParser: true,
@@ -17,14 +17,24 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
-    Friend.find({})
-    .exec((err,friends)=>{
-        if(err){
-            throw err;
-        }else{
-            res.render('friends',{friends:friends})
-        }
-    })    
+  Friend.find({}).exec((err, friends) => {
+    if (err) {
+      throw err;
+    } else {
+      res.render("friends", { friends: friends });
+    }
+  });
+});
+app.post("/addfriend", (req, res) => {
+  var newFriend = new Friend(req.body);
+  newFriend.save()
+  .then(friend =>{
+    console.log('Friend added to the database successfully');
+    res.redirect('/');
+  }) 
+  .catch(err =>{
+    res.status(400).send("Unable to save to the database");
+  })
 });
 
 PORT = process.env.PORT || 3000;
